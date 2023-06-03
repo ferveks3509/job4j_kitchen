@@ -13,12 +13,19 @@ public class Order {
     private String orderName;
     @JoinColumn(name = "dish_id")
     private int dishId;
-    private Boolean status;
+    @Enumerated(EnumType.STRING)
+    private Status status;
 
     public Order() {
     }
 
-    public Order(String orderName, int dishId, Boolean status) {
+    public Order(String orderName, int dishId) {
+        this.orderName = orderName;
+        this.dishId = dishId;
+    }
+
+    public Order(int id, String orderName, int dishId, Status status) {
+        this.id = id;
         this.orderName = orderName;
         this.dishId = dishId;
         this.status = status;
@@ -48,11 +55,11 @@ public class Order {
         this.dishId = dishId;
     }
 
-    public Boolean getStatus() {
+    public Status getStatus() {
         return status;
     }
 
-    public void setStatus(Boolean status) {
+    public void setStatus(Status status) {
         this.status = status;
     }
 
@@ -67,15 +74,5 @@ public class Order {
     @Override
     public int hashCode() {
         return Objects.hash(id);
-    }
-
-    @Override
-    public String toString() {
-        return "Order{" +
-                "id=" + id +
-                ", orderName='" + orderName + '\'' +
-                ", dishId=" + dishId +
-                ", status=" + status +
-                '}';
     }
 }
