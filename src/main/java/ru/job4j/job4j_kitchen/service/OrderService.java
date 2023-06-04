@@ -3,6 +3,7 @@ package ru.job4j.job4j_kitchen.service;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
+import ru.job4j.job4j_kitchen.model.Notification;
 import ru.job4j.job4j_kitchen.model.Order;
 import ru.job4j.job4j_kitchen.model.Status;
 import ru.job4j.job4j_kitchen.repository.OrderRepository;
@@ -20,8 +21,10 @@ public class OrderService {
 
     @KafkaListener(topics = "preOrder")
     public void receiveOrder(Order order) {
+        Notification notification = new Notification();
         orderRepository.save(order);
         order.setStatus(Status.completed);
-        kafkaTemplate.send("statusDish", order.getStatus().name());
+        notification.setStatus(order.getStatus().name());
+        kafkaTemplate.send("statusDish", notification);
     }
 }
